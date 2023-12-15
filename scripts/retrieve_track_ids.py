@@ -85,9 +85,10 @@ class DataRetriever:
         # this is done to avoid PySpark data type errors when creating the Data Frame
         for index in range(len(audio_features)):
             for float_feature in float_features:
-                audio_features[index][float_feature] = float(
-                    audio_features[index][float_feature]
-                )
+                if audio_features[index] is not None:
+                    audio_features[index][float_feature] = float(
+                        audio_features[index][float_feature]
+                    )
         # remove None values that correspond to unfound tracks
         filtered_audio_features = [
             audio_features_
@@ -179,7 +180,7 @@ if __name__ == "__main__":
     # parameters of the retrieval process
     batch_size = 100
     batches_per_file = 100
-    request_per_minute = 100
+    request_per_minute = 50
 
     # instantiate the SparkSession class
     spark = SparkSession.builder.getOrCreate()
