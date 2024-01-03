@@ -9,17 +9,17 @@ from pyspark.sql.types import (
     IntegerType,
     DoubleType,
     StringType,
+    ArrayType,
 )
-
 
 # define used paths
 PLAYLISTS_DATA_PATH = "/user/s3264424/project_group_18/data/spotify_playlists/"
-ARTISTS_DATA_PATH = "/user/s3264424/project_group_18/data/artists/"
-AUDIO_FEATURES_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features/"
+ARTISTS_DATA_PATH = "/user/s3264424/project_group_18/data/artists_test/"
+AUDIO_FEATURES_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features_test/"
 CREDENTIALS_FILE_PATH = "./spotify_key.config"
 
 # define the type of data that is retrieved
-ID_TYPE="artist"
+ID_TYPE = "tracks"
 
 
 class DataRetriever:
@@ -29,6 +29,13 @@ class DataRetriever:
 
     def __init__(self):
         self.__auth_token = self.__get_auth_token()
+
+    def __check_errors(self, response):
+        # stop the program if the status code is 429
+        if response.status_code == 429:
+            raise Exception("Spotify API calls limit has been reached!")
+        elif response.status_code != 200:
+            print(f"Response code: {response.status_code}")
 
     def __get_auth_token(self):
         """
@@ -68,11 +75,8 @@ class DataRetriever:
             headers={"Authorization": f"Bearer {self.__auth_token}"},
         )
 
-        # stop the program if the status code is 429
-        if response.status_code == 429:
-            raise Exception("Spotify API calls limit has been reached!")
-        elif response.status_code != 200:
-            print(f"Response code: {response.status_code}")
+        # check the returned request code
+        self.__check_errors(response)
 
         audio_features = response.json()["audio_features"]
 
@@ -96,6 +100,7 @@ class DataRetriever:
                     audio_features[index][float_feature] = float(
                         audio_features[index][float_feature]
                     )
+
         # remove None values that correspond to unfound tracks
         filtered_audio_features = [
             audio_features_
@@ -105,9 +110,32 @@ class DataRetriever:
 
         return filtered_audio_features
 
-
     def get_artist_data(self, artist_ids):
-        pass
+        """
+        This method takes as input a string with comma-separated
+        artist ids and returns for each artist the retrieved info
+        stored in a list.
+        """
+
+        # request artist data
+        response = requests.get(
+            f"https://api.spotify.com/v1/artists?ids={artist_ids}",
+            headers={"Authorization": f"Bearer {self.__auth_token}"},
+        )
+
+        # check the returned request code
+        self.__check_errors(response)
+
+        artists_data = response.json()["artists"]
+
+        # keep only features of interest and remove None values that correspond to unfound tracks
+        filtered_artists_data = [
+            {k: artist_data_[k] for k in ["genres", "id", "name", "uri"]}
+            for artist_data_ in artists_data
+            if artist_data_ is not None
+        ]
+
+        return filtered_artists_data
 
 
 class DataManipulator:
@@ -117,7 +145,7 @@ class DataManipulator:
     the info as JSON files.
 
     """
-    
+
     # define the schemas used when creating the PySpark Data Frame
     audio_features_schema = StructType(
         [
@@ -144,7 +172,10 @@ class DataManipulator:
 
     artists_schema = StructType(
         [
-            
+            StructField("genres", ArrayType(StringType())),
+            StructField("id", StringType()),
+            StructField("name", StringType()),
+            StructField("uri", StringType()),
         ]
     )
 
@@ -171,9 +202,7 @@ class DataManipulator:
         )
 
         # get only ids and sort them
-        ids = sorted(
-            [uri[f"{ID_TYPE}_uri"].split(ID_TYPE + ":")[-1] for uri in uris]
-        )
+        ids = sorted([uri[f"{ID_TYPE}_uri"].split(ID_TYPE + ":")[-1] for uri in uris])
 
         return ids
 
@@ -204,10 +233,9 @@ if __name__ == "__main__":
         batch_size = 50
     elif ID_TYPE == "track":
         batch_size = 100
-
     batches_per_file = 100
     request_per_minute = 50
-    
+
     # instantiate the SparkSession class
     spark = SparkSession.builder.getOrCreate()
 
@@ -226,17 +254,17 @@ if __name__ == "__main__":
         # skip already retrieved batches
         if (batch_index + 1) <= 0:
             continue
-
         print(f"Batch {batch_index + 1}/{batches_number}")
 
         # get audio features or artist info for tracks from this batch
-        current_ids = ",".join(ids[batch_index * batch_size : (batch_index + 1) * batch_size])
+        current_ids = ",".join(
+            ids[batch_index * batch_size : (batch_index + 1) * batch_size]
+        )
 
         if ID_TYPE == "artist":
             retrieved_data = data_retriever.get_artist_data(current_ids)
         elif ID_TYPE == "track":
             retrieved_data = data_retriever.get_audio_features(current_ids)
-        
         all_retrieved_data.extend(retrieved_data)
 
         # control the number of requests per minute to avoid getting the 429 error
