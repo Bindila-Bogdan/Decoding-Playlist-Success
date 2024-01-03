@@ -14,8 +14,12 @@ from pyspark.sql.types import (
 
 # define used paths
 PLAYLISTS_DATA_PATH = "/user/s3264424/project_group_18/data/spotify_playlists/"
-STORED_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features/"
+ARTISTS_DATA_PATH = "/user/s3264424/project_group_18/data/artists/"
+AUDIO_FEATURES_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features/"
 CREDENTIALS_FILE_PATH = "./spotify_key.config"
+
+# define the type of data that is retrieved
+ID_TYPE="artist"
 
 
 class DataRetriever:
@@ -67,6 +71,9 @@ class DataRetriever:
         # stop the program if the status code is 429
         if response.status_code == 429:
             raise Exception("Spotify API calls limit has been reached!")
+        elif response.status_code != 200:
+            print(f"Response code: {response.status_code}")
+
         audio_features = response.json()["audio_features"]
 
         # convert the following features to float values
@@ -99,16 +106,20 @@ class DataRetriever:
         return filtered_audio_features
 
 
+    def get_artist_data(self, artist_ids):
+        pass
+
+
 class DataManipulator:
     """
-    This class focuses on retrieving the track ids from the playlists
-    data, converts audio features for a PySpark Data Frame and stores
-    them as JSON files.
+    This class focuses on retrieving the track and artist data from the
+    playlists, converts them to a PySpark Data Frame and stores
+    the info as JSON files.
 
     """
-
-    # define the schema used when creating the PySpark Data Frame
-    schema = StructType(
+    
+    # define the schemas used when creating the PySpark Data Frame
+    audio_features_schema = StructType(
         [
             StructField("danceability", DoubleType()),
             StructField("energy", DoubleType()),
@@ -131,81 +142,102 @@ class DataManipulator:
         ]
     )
 
+    artists_schema = StructType(
+        [
+            
+        ]
+    )
+
     @staticmethod
-    def get_track_ids():
+    def get_ids():
         """
         This method loads the playlists data and returns a sorted list
-        of unique track ids.
+        of unique track or artist ids.
         """
 
-        print("Get track ids...")
+        print(f"Get {ID_TYPE} ids...")
 
         # load data that contains the playlists
         playlists_data = spark.read.json(PLAYLISTS_DATA_PATH, multiLine=True)
 
-        # extract distinct track ids
-        track_uris = (
+        # extract distinct uris
+        uris = (
             playlists_data.select(explode("playlists"))
             .select(explode("col.tracks"))
-            .select("col.track_uri")
-            .select("track_uri")
+            .select(f"col.{ID_TYPE}_uri")
+            .select(f"{ID_TYPE}_uri")
             .distinct()
             .collect()
         )
 
-        # get only the track ids and sort them
-        track_ids = sorted(
-            [track_uri["track_uri"].split("track:")[-1] for track_uri in track_uris]
+        # get only ids and sort them
+        ids = sorted(
+            [uri[f"{ID_TYPE}_uri"].split(ID_TYPE + ":")[-1] for uri in uris]
         )
 
-        return track_ids
+        return ids
 
     @classmethod
-    def store(cls, audio_features):
+    def store(cls, data):
         """
         It creates the PySpark Data Frame from the audio features
-        and stores them as a JSON file.
+        or artists info and stores them as a JSON file.
         """
 
+        if ID_TYPE == "artist":
+            storage_path = ARTISTS_DATA_PATH
+            schema = cls.artists_schema
+        elif ID_TYPE == "track":
+            storage_path = AUDIO_FEATURES_DATA_PATH
+            schema = cls.audio_features_schema
+
         # create PySpark Data Frame
-        audio_features_df = spark.createDataFrame(
-            audio_features, schema=DataManipulator.schema
-        )
+        data_df = spark.createDataFrame(data, schema=schema)
 
         # reduce the number of partitions to 1 and store data
-        audio_features_df.coalesce(1).write.mode("append").json(STORED_DATA_PATH)
+        data_df.coalesce(1).write.mode("append").json(storage_path)
 
 
 if __name__ == "__main__":
-    # parameters of the retrieval process
-    batch_size = 100
+    # set parameters of the retrieval process
+    if ID_TYPE == "artist":
+        batch_size = 50
+    elif ID_TYPE == "track":
+        batch_size = 100
+
     batches_per_file = 100
     request_per_minute = 50
-
+    
     # instantiate the SparkSession class
     spark = SparkSession.builder.getOrCreate()
 
     # get track ids
     data_retriever = DataRetriever()
-    track_ids = DataManipulator.get_track_ids()
+    ids = DataManipulator.get_ids()
 
     # compute number of batches
-    batches_number = len(track_ids) // batch_size
+    batches_number = len(ids) // batch_size
 
-    # this list stores the retrieved audio features
-    all_audio_features = []
+    # this list stores the retrieved data
+    all_retrieved_data = []
 
     # iterate over batches
     for batch_index in range(batches_number):
+        # skip already retrieved batches
+        if (batch_index + 1) <= 0:
+            continue
+
         print(f"Batch {batch_index + 1}/{batches_number}")
 
-        # get audio features for tracks from this batch
-        audio_features = data_retriever.get_audio_features(
-            ",".join(
-                track_ids[batch_index * batch_size : (batch_index + 1) * batch_size]
-            )
-        )
-        all_audio_features.extend(audio_features)
+        # get audio features or artist info for tracks from this batch
+        current_ids = ",".join(ids[batch_index * batch_size : (batch_index + 1) * batch_size])
+
+        if ID_TYPE == "artist":
+            retrieved_data = data_retriever.get_artist_data(current_ids)
+        elif ID_TYPE == "track":
+            retrieved_data = data_retriever.get_audio_features(current_ids)
+        
+        all_retrieved_data.extend(retrieved_data)
 
         # control the number of requests per minute to avoid getting the 429 error
         time.sleep(60 / request_per_minute)
@@ -214,9 +246,9 @@ if __name__ == "__main__":
         if ((batch_index + 1) % batches_per_file == 0) or (
             (batch_index + 1) == batches_number
         ):
-            print("Storing audio features...")
+            print(f"Storing {ID_TYPE} data...")
             # store the retrieved data
-            DataManipulator.store(all_audio_features)
+            DataManipulator.store(all_retrieved_data)
             # deallocate memory
-            del all_audio_features
-            all_audio_features = []
+            del all_retrieved_data
+            all_retrieved_data = []
