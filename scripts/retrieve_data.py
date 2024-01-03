@@ -14,12 +14,12 @@ from pyspark.sql.types import (
 
 # define used paths
 PLAYLISTS_DATA_PATH = "/user/s3264424/project_group_18/data/spotify_playlists/"
-ARTISTS_DATA_PATH = "/user/s3264424/project_group_18/data/artists_test/"
-AUDIO_FEATURES_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features_test/"
+ARTISTS_DATA_PATH = "/user/s3264424/project_group_18/data/artists/"
+AUDIO_FEATURES_DATA_PATH = "/user/s3264424/project_group_18/data/audio_features/"
 CREDENTIALS_FILE_PATH = "./spotify_key.config"
 
 # define the type of data that is retrieved
-ID_TYPE = "tracks"
+ID_TYPE = "artist"
 
 
 class DataRetriever:
@@ -128,7 +128,7 @@ class DataRetriever:
 
         artists_data = response.json()["artists"]
 
-        # keep only features of interest and remove None values that correspond to unfound tracks
+        # keep only features of interest and remove None values that correspond to unfound artists
         filtered_artists_data = [
             {k: artist_data_[k] for k in ["genres", "id", "name", "uri"]}
             for artist_data_ in artists_data
@@ -141,9 +141,8 @@ class DataRetriever:
 class DataManipulator:
     """
     This class focuses on retrieving the track and artist data from the
-    playlists, converts them to a PySpark Data Frame and stores
+    playlists, convert them to a PySpark Data Frame and stores
     the info as JSON files.
-
     """
 
     # define the schemas used when creating the PySpark Data Frame
@@ -210,9 +209,10 @@ class DataManipulator:
     def store(cls, data):
         """
         It creates the PySpark Data Frame from the audio features
-        or artists info and stores them as a JSON file.
+        or artists info and stores it as a JSON file.
         """
 
+        # pick storage path and schema based on the retrieved data type
         if ID_TYPE == "artist":
             storage_path = ARTISTS_DATA_PATH
             schema = cls.artists_schema
@@ -265,6 +265,7 @@ if __name__ == "__main__":
             retrieved_data = data_retriever.get_artist_data(current_ids)
         elif ID_TYPE == "track":
             retrieved_data = data_retriever.get_audio_features(current_ids)
+
         all_retrieved_data.extend(retrieved_data)
 
         # control the number of requests per minute to avoid getting the 429 error
