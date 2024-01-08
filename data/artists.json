@@ -1,0 +1,34 @@
+[
+    {
+        "genres": [
+            "canadian electronic",
+            "complextro",
+            "edm",
+            "electro house",
+            "pop dance",
+            "progressive house"
+        ],
+        "id": "2CIMQHirSU0MQqyYHq0eOx",
+        "name": "deadmau5",
+        "uri": "spotify:artist:2CIMQHirSU0MQqyYHq0eOx"
+    },
+    {
+        "genres": [
+            "indietronica"
+        ],
+        "id": "57dN52uHvrHOxijzpIgu3E",
+        "name": "Ratatat",
+        "uri": "spotify:artist:57dN52uHvrHOxijzpIgu3E"
+    },
+    {
+        "genres": [
+            "dance pop",
+            "edm",
+            "pop",
+            "pop dance"
+        ],
+        "id": "1vCWHaC5f2uS3yhpwWbIA6",
+        "name": "Avicii",
+        "uri": "spotify:artist:1vCWHaC5f2uS3yhpwWbIA6"
+    }
+]
