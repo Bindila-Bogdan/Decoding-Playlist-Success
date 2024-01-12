@@ -1,0 +1,13 @@
+Analysis of Artists
+
+1. Most Popular Genres:
+
+Description: Count the frequency of each genre listed in the artists' dataset.
+Requirements: Access to genres field in artists_df.
+Visualization: Bar plot or word cloud.
+
+2. Genres Associated with Artists:
+
+Description: Analyze how many genres are typically associated with each artist.
+Requirements: Access to genres field in artists_df.
+Visualization: Histogram or box plot.

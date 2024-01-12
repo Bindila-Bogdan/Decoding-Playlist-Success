@@ -1,0 +1,15 @@
+Analysis of Audio Features
+
+1. Song Level Audio Features:
+
+Description: Analyze individual audio features like danceability, energy, etc., for songs.
+Requirements: Fields from audio_features_df.
+Method: Compute summary statistics for each feature.
+Visualization: Box plots or histograms.
+
+2. Playlist Level Audio Feature Aggregation:
+
+Description: Aggregate audio features at the playlist level.
+Requirements: Join audio_features_df with playlists_df, focusing on track IDs.
+Method: Aggregate each audio feature by playlist.
+Visualization: Heatmap or multi-bar chart.
