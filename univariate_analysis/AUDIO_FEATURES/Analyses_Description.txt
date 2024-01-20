@@ -1,15 +1,14 @@
-Analysis of Audio Features
-
 1. Song Level Audio Features:
+   Description: Analyze individual audio features like danceability, energy, etc., for songs.
+   Method: Compute summary statistics for each feature.
+   Visualization: Box plots or histograms displaying the distribution of each audio feature.
 
-Description: Analyze individual audio features like danceability, energy, etc., for songs.
-Requirements: Fields from audio_features_df.
-Method: Compute summary statistics for each feature.
-Visualization: Box plots or histograms.
+2. Track Duration Analysis:
+   Description: Understand the distribution of track lengths.
+   Method: Calculate statistical measures (e.g., average, median, range) for the duration of tracks.
+   Visualization: Histograms or box plots illustrating the variation in track lengths.
 
-2. Playlist Level Audio Feature Aggregation:
-
-Description: Aggregate audio features at the playlist level.
-Requirements: Join audio_features_df with playlists_df, focusing on track IDs.
-Method: Aggregate each audio feature by playlist.
-Visualization: Heatmap or multi-bar chart.
+3. Mode of Tracks:
+   Description: Analyze the distribution of the mode field to determine the prevalence of major versus minor keys in tracks.
+   Method: Calculate the frequency or proportion of tracks in major and minor keys.
+   Visualization: Bar chart or pie chart showing the distribution of track modes (major vs. minor).

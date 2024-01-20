@@ -1,29 +1,39 @@
-Analysis of Playlists
+1. Playlist Composition Aggregation:
+   Description: Aggregate key statistics about the composition of playlists, including the average, maximum, minimum, and standard deviation for the number of artists, albums, and tracks.
+   Method: Calculate aggregated statistics (average, max, min, standard deviation) for num_artists, num_albums, and num_tracks across all playlists.
+   Visualization: Bar charts or box plots representing the aggregated statistics to understand the typical composition of playlists.
 
-1.Playlist Composition:
+2. Playlist Duration Aggregation:
+   Description: Aggregate the total duration of playlists to find the average, maximum, and minimum lengths of playlists.
+   Method: Sum the duration_ms for all tracks in each playlist and then calculate aggregated statistics (average, max, min) for the total duration of playlists.
+   Visualization: Box plots or histograms depicting the aggregated total durations, highlighting the variability and typical length of playlists.
 
-Description: Examine the number of artists, albums, and tracks in each playlist.
-Requirements: Fields like num_artists, num_albums, and num_tracks in playlists_df.
-Method: Summarize these fields across all playlists.
-Visualization: Histograms or bar charts.
+3. Playlist Name Analysis:
+   Description: Perform text analysis on playlist names.
+   Method: Text analytics for frequency or pattern recognition.
+   Visualization: Word cloud or frequency plot.
 
-2. Song Length Distribution:
+4. Analysis of Playlist Modification Trends:
+   Description: Analyze the modified_at field to understand how frequently playlists are updated.
+   Method: Convert the modified_at timestamps to a readable date format, and then aggregate data to see the distribution over time (e.g., number of updates per month or year).
+   Visualization: Line chart or bar chart showing trends over time.
 
-Description: Analyze the distribution of song lengths in each playlist.
-Requirements: duration_ms within tracks in playlists_df.
-Method: Aggregate and calculate statistics of song lengths.
-Visualization: Histogram.
+5. Follower Count Distribution:
+   Description: Examine the distribution of num_followers to understand the popularity range of playlists.
+   Method: Analyze the distribution of num_followers by calculating summary statistics and frequency distribution.
+   Visualization: Histogram or box plot showing the spread of follower counts.
 
-3. Playlist Duration:
+6. Analysis of Playlist Descriptions:  DIDNT END UP USING
+   Description: Perform text analysis on descriptions to identify common themes or keywords.
+   Method: Tokenize description texts and perform frequency analysis of words or phrases.
+   Visualization: Word cloud or bar chart of most frequent words.
 
-Description: Determine the total duration of each playlist.
-Requirements: duration_ms within tracks in playlists_df.
-Method: Sum duration_ms for each playlist.
-Visualization: Box plot or histogram.
+7. Distribution of Number of Edits:
+   Description: Investigate how often playlists are edited by analyzing num_edits.
+   Method: Aggregate num_edits to find distribution patterns like average, median, and range.
+   Visualization: Histogram or box plot.
 
-4. Playlist Name Analysis:
-
-Description: Perform text analysis on playlist names.
-Requirements: name field in playlists_df.
-Method: Text analytics for frequency or pattern recognition.
-Visualization: Word cloud or frequency plot.
+8. Analysis of Collaborative vs. Non-Collaborative Playlists:
+   Description: Examine the proportion of collaborative playlists (collaborative field) versus non-collaborative ones.
+   Method: Count the number of playlists marked as collaborative and compare it with non-collaborative playlists.
+   Visualization: Pie chart or bar chart showing the proportion.

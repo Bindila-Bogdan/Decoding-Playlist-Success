@@ -1,13 +1,19 @@
-Analysis of Artists
-
 1. Most Popular Genres:
+   Description: Count the frequency of each genre listed in the artists' dataset.
+   Method: Tally the occurrences of each genre in the genres field.
+   Visualization: Bar plot or word cloud to display the popularity of each genre.
 
-Description: Count the frequency of each genre listed in the artists' dataset.
-Requirements: Access to genres field in artists_df.
-Visualization: Bar plot or word cloud.
+2. General Genre Statistics:
+   Description: Mean, Min, Max, Standard deviation
+   Method: Compute the number of genres linked to each artist and analyze the distribution.
+   Visualization: Histogram or box plot to show how genre count varies among artists.
 
-2. Genres Associated with Artists:
+3. Genre Diversity Analysis: (THIS IS JUST A NUMBER)
+   Description: Count the number of unique genres present in the dataset.
+   Method: Identify and count the distinct genres in the genres field.
+  Visualization: None, as this is a simple descriptive statistic.
 
-Description: Analyze how many genres are typically associated with each artist.
-Requirements: Access to genres field in artists_df.
-Visualization: Histogram or box plot.
+4. Genres Associated with Artists:
+   Description: Analyze how many genres are typically associated with each artist.
+   Method: Compute the number of genres linked to each artist and analyze the distribution.
+   Visualization: Histogram or box plot to show how genre count varies among artists.
