@@ -50,7 +50,7 @@ param_grid_rf = (
     .addGrid(rf.numTrees, list(range(64, 129, 16)))
     .addGrid(rf.subsamplingRate, [0.5, 0.9, 1.0])
     .addGrid(rf.minInstancesPerNode, [1] +  list(range(5, 21, 5)))
-    .addGird(rf.featureSubsetStrategy, ["sqrt", "log2", "exhaustiveSearch"])
+    .addGrid(rf.featureSubsetStrategy, ["sqrt", "log2", "all"])
     .build()
 )
 
