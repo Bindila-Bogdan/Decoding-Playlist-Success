@@ -94,3 +94,22 @@ Train-validation  rmse: 212.78379192844747
 Test  rmse: 95.67415141349656
 Train-validation  r2: 0.10084250544245688
 Test  r2: -0.06725499534925805
+
+
+--- W/O OUTLIERS W/O SKEW W/O UNDERSAMPLING ----
+Train-validation baseline rmse: 0.48191314032761856
+Test baseline rmse: 0.482290023964837
+Train-validation baseline r2: -4.838351941316432e-13
+Test baseline r2: -3.1997071061606874e-06
+Cross-validation r2 scores: [0.043926264806167716]
+
+***Info about the best model***
+r2: 0.043926264806167716
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.0011628275011124644, 'danceability': 0.02033702540139073, 'duration_ms': 0.0022408291885519407, 'energy': 0.004686651425235668, 'instrumentalness': 0.009211418920243793, 'key': 1.1920362354800636e-05, 'liveness': 0.001004280200945532, 'loudness': 0.0029472552366224722, 'mode': 0.002001431777846911, 'speechiness': 0.0038165920305386477, 'tempo': 0.0019020556840723731, 'valence': 0.019815729133626447, 'num_tracks': 0.18849468520814966, 'num_artists': 0.27898643321397615, 'num_albums': 0.46253742619004756, 'genre_count': 0.0008434385252848302}
+Train-validation  rmse: 0.4710130144634758
+Test  rmse: 0.47173035860566
+Train-validation  r2: 0.04472529596505459
+Test  r2: 0.04330724479550696
