@@ -24,7 +24,7 @@ OPTIMIZATION_METRIC = "r2"
 
 REMOVE_OUTLIERS = True
 REMOVE_SKEWENSS = True
-PERFORM_UNDERSAMPLING = False
+PERFORM_UNDERSAMPLING = True
 
 DATA_PATH = "/user/s3307891/all_aggregated_features_parquet"
 MODEL_PATH = "/user/s3264424/project_group_18/random_forest_regressor/"
@@ -105,7 +105,6 @@ rf = RandomForestRegressor(
 pipeline = Pipeline(stages=[vector_assembler, standard_scaler, rf])
 
 # define the space of hyperparameters for model optimization
-"""
 param_grid_rf = (
     ParamGridBuilder()
     .addGrid(rf.numTrees, list(range(64, 129, 32)))
@@ -114,8 +113,6 @@ param_grid_rf = (
     .addGrid(rf.featureSubsetStrategy, ["sqrt", "all"])
     .build()
 )
-"""
-param_grid_rf = ParamGridBuilder().addGrid(rf.numTrees, [20]).build()
 
 # define evaluator
 evaluator = RegressionEvaluator(
