@@ -1,0 +1,96 @@
+--- W OUTLIERS W SKEW W/O UNDERSAMPLING ----
+Train-validation baseline rmse: 139.45290808775965
+Test baseline rmse: 72.27517035462458
+Train-validation baseline r2: -6.783462680459706e-13
+Test baseline r2: -3.5060616574433823e-06
+Cross-validation r2 scores: [-0.03160181433964163]
+
+***Info about the best model***
+r2: -0.03160181433964163
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.04113719305030874, 'danceability': 0.08884033317802843, 'duration_ms': 0.045473907744191126, 'energy': 0.04129481693633523, 'instrumentalness': 0.031477627929269725, 'key': 0.08820568517074581, 'liveness': 0.06897681266443759, 'loudness': 0.07575302671653064, 'mode': 0.04449267231918083, 'speechiness': 0.10932540097165144, 'tempo': 0.03538162158255551, 'valence': 0.03157584634580279, 'num_tracks': 0.145017366042533, 'num_artists': 0.028569014352776735, 'num_albums': 0.07555782497923712, 'genre_count': 0.048920850016415274}
+Train-validation  rmse: 123.46555448440728
+Test  rmse: 130.84753682431295
+Train-validation  r2: 0.07615037490248155
+Test  r2: -0.006442343229309477
+
+
+--- W/O OUTLIERS W/O SKEW W UNDERSAMPLING ----
+Train-validation baseline rmse: 0.6045081278164129
+Test baseline rmse: 0.6061599815760345
+Train-validation baseline r2: 9.695577674051492e-13
+Test baseline r2: -9.934883481710344e-05
+Cross-validation r2 scores: [0.058816651329797555]
+
+***Info about the best model***
+r2: 0.058816651329797555
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.0016431264092586883, 'danceability': 0.013749905598680584, 'duration_ms': 0.0027081896976167215, 'energy': 0.004119152509763697, 'instrumentalness': 0.014380336566155555, 'key': 0.0008176374653196796, 'liveness': 0.0023292508340340074, 'loudness': 0.003704141816457449, 'mode': 0.0012124043545685183, 'speechiness': 0.003674408205607719, 'tempo': 0.0018376441648681736, 'valence': 0.016626616941074132, 'num_tracks': 0.24772222159114046, 'num_artists': 0.2602685532413298, 'num_albums': 0.42267554607227337, 'genre_count': 0.0025308645318514364}
+Train-validation  rmse: 0.5871667115747914
+Test  rmse: 0.5845277332359389
+Train-validation  r2: 0.05934966981601597
+Test  r2: 0.0580762783905826
+
+
+--- W/O OUTLIERS W SKEW W/O UNDERSAMPLING ----
+Train-validation baseline rmse: 1.9648884783255043
+Test baseline rmse: 1.974479438256492
+Train-validation baseline r2: -1.8174350913113813e-12
+Test baseline r2: -3.6686334059510273e-07
+Cross-validation r2 scores: [0.017539690630633875]
+
+***Info about the best model***
+r2: 0.017539690630633875
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.008080570394637145, 'danceability': 0.016882626106905822, 'duration_ms': 0.005495103994665282, 'energy': 0.007877602112927626, 'instrumentalness': 0.02453432716164173, 'key': 0.002274101007951461, 'liveness': 0.004401335952634501, 'loudness': 0.004610705720790945, 'mode': 0.00712637331811902, 'speechiness': 0.01619706613676344, 'tempo': 0.003522159848499496, 'valence': 0.033558547430648525, 'num_tracks': 0.23282589538133397, 'num_artists': 0.23624331965414416, 'num_albums': 0.3887884504484415, 'genre_count': 0.007581815329895306}
+Train-validation  rmse: 1.946023305743924
+Test  rmse: 1.9562240546775849
+Train-validation  r2: 0.01911010135175306
+Test  r2: 0.018405495740191347
+
+real    3m12.627s
+user    2m29.222s
+sys     0m13.106s
+
+
+--- W OUTLIERS W/O SKEW W/O UNDERSAMPLING ----
+Train-validation baseline rmse: 0.5155187220347863
+Test baseline rmse: 0.5146848251133259
+Train-validation baseline r2: 9.28590537796481e-13
+Test baseline r2: -1.5827559876058217e-06
+Cross-validation r2 scores: [0.03933231504785717]
+
+***Info about the best model***
+r2: 0.03933231504785717
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.000975199978051791, 'danceability': 0.017124675764890403, 'duration_ms': 0.002230873883443321, 'energy': 0.0039810094144614025, 'instrumentalness': 0.010867136978970503, 'key': 0.0006050671969811431, 'liveness': 0.0013184081137185791, 'loudness': 0.0022335366211250823, 'mode': 0.002947539764194619, 'speechiness': 0.004394657181322702, 'tempo': 0.002582888591159769, 'valence': 0.02140366674607782, 'num_tracks': 0.22555430017909806, 'num_artists': 0.24541378885776371, 'num_albums': 0.4565097002782032, 'genre_count': 0.0018575504505382746}
+Train-validation  rmse: 0.5048616204373342
+Test  rmse: 0.5050748959716669
+Train-validation  r2: 0.04091780282111834
+Test  r2: 0.03699281820294731
+
+--- W OUTLIERS W SKEW W UNDERSAMPLING ----
+Train-validation baseline rmse: 224.33588822268797
+Test baseline rmse: 93.0717738989869
+Train-validation baseline r2: -2.5170121700224257e-06
+Test baseline r2: -5.8885087511617584e-05
+Cross-validation r2 scores: [-0.020233600153090947]
+
+***Info about the best model***
+r2: -0.020233600153090947
+Hyperparameters:
+{'subsampling rate': 1.0, 'num trees': 20, 'min instances per node': 1, 'feature subset strategy': 'auto'}
+Feature importances:
+{'acousticness': 0.026646544670273532, 'danceability': 0.058846705675116504, 'duration_ms': 0.04574721598975883, 'energy': 0.04318076742556347, 'instrumentalness': 0.07757262771799893, 'key': 0.15909278145646777, 'liveness': 0.07299454647466061, 'loudness': 0.013412531442664277, 'mode': 0.05808934262837493, 'speechiness': 0.024452804311411436, 'tempo': 0.005286839582894541, 'valence': 0.08573289417752931, 'num_tracks': 0.10576869602622636, 'num_artists': 0.00844936666673126, 'num_albums': 0.1527408640831022, 'genre_count': 0.06198547167122601}
+Train-validation  rmse: 212.78379192844747
+Test  rmse: 95.67415141349656
+Train-validation  r2: 0.10084250544245688
+Test  r2: -0.06725499534925805
