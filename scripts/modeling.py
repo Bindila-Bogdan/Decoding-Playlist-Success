@@ -24,9 +24,9 @@ OPTIMIZATION_METRIC = "r2"
 
 REMOVE_OUTLIERS = True
 REMOVE_SKEWENSS = True
-PERFORM_UNDERSAMPLING = True
+PERFORM_UNDERSAMPLING = False
 
-DATA_PATH = "/user/s3307891/all_aggregated_features"
+DATA_PATH = "/user/s3307891/all_aggregated_features_parquet"
 MODEL_PATH = "/user/s3264424/project_group_18/random_forest_regressor/"
 DATA_STORAGE_PATH = "/user/s3264424/project_group_18/data/regression_predictions/"
 
@@ -51,7 +51,7 @@ def measure_performance(train_validation_df, test_df, baseline_evaluator):
 
 
 # load aggregated features
-agg_features_df = spark.read.csv(DATA_PATH, header="true", inferSchema="true").distinct()
+agg_features_df = spark.read.parquet(DATA_PATH)
 
 # remove outliers that have a value largest than the defined percentile threshold
 if REMOVE_OUTLIERS:
