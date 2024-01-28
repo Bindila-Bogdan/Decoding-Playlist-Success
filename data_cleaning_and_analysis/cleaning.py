@@ -22,14 +22,14 @@ if __name__ == "__main__":
     audio_features = spark.read.json("/user/s3264424/project_group_18/data/audio_features/").distinct()
 
     artists = spark.read.json("/user/s3264424/project_group_18/data/artists/").distinct()
-    artists.repartition(60).write.mode("append").parquet("/user/s3264440/project_group_18/data/artists")
+    artists.write.mode("append").parquet("/user/s3264440/project_group_18/data/artists")
 
     audio_features = drop_columns_from_df(audio_features, [AudioFeaturesTable.ANALYSIS_URL, AudioFeaturesTable.TRACK_HREF, AudioFeaturesTable.TYPE])
-    audio_features.repartition(229).write.mode("append").parquet("/user/s3264440/project_group_18/data/audio_features") # store the clean data
+    audio_features.write.mode("append").parquet("/user/s3264440/project_group_18/data/audio_features") # store the clean data
     print("SUCCES: audio_features.parquet successufully written.")
 
     playlists = playlists.select(explode("playlists")).select("col.*") # drop the info column
-    new_playlists = drop_columns_from_df(playlists, [PlaylistTable.DESCRIPTION, PlaylistTable.MODIFIED_AT, PlaylistTable.PID])
-    new_playlists = drop_columns_from_df(playlists, [PlaylistTable.ALBUM_NAME, PlaylistTable.ARTIST_URL, PlaylistTable.TRACK_NAME, PlaylistTable.TRACK_URI], PlaylistTable.TRACKS, True)
-    new_playlists.repartition(999).write.mode("append").parquet("/user/s3264440/project_group_18/data/spotify_playlists") # store the clean data
+    new_playlists = drop_columns_from_df(playlists, [PlaylistTable.DESCRIPTION, PlaylistTable.MODIFIED_AT])
+    new_playlists = drop_columns_from_df(new_playlists, [PlaylistTable.ALBUM_NAME, PlaylistTable.ARTIST_URL, PlaylistTable.TRACK_NAME, PlaylistTable.TRACK_URI], PlaylistTable.TRACKS, True)
+    new_playlists.write.mode("append").parquet("/user/s3264440/project_group_18/data/spotify_playlists") # store the clean data
     print("SUCCES: spotify_playlists.parquet successufully written.")
