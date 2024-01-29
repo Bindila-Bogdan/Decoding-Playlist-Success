@@ -28,7 +28,7 @@ PERFORM_UNDERSAMPLING = True
 
 DATA_PATH = "/user/s3307891/all_aggregated_features_parquet"
 MODEL_PATH = "/user/s3264424/project_group_18/random_forest_regressor/"
-DATA_STORAGE_PATH = "/user/s3264424/project_group_18/data/regression_predictions/"
+DATA_STORAGE_PATH = "/user/s3264424/project_group_18/data/predictions/"
 
 
 def measure_performance(train_validation_df, test_df, baseline_evaluator):
@@ -148,7 +148,7 @@ print(f"Cross-validation {OPTIMIZATION_METRIC} scores: {scores}")
 
 # display info about the best model
 print("\n***Info about the best model***")
-print(f"{OPTIMIZATION_METRIC}: {min(scores)}")
+print(f"{OPTIMIZATION_METRIC}: {max(scores)}")
 print(f"Hyperparameters:\n{best_rf_hyperparameters}")
 print(f"Feature importances:\n{dict(zip(features, best_rf.featureImportances))}")
 
