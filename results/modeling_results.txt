@@ -54,10 +54,6 @@ Test  rmse: 1.9562240546775849
 Train-validation  r2: 0.01911010135175306
 Test  r2: 0.018405495740191347
 
-real    3m12.627s
-user    2m29.222s
-sys     0m13.106s
-
 
 --- W OUTLIERS W/O SKEW W/O UNDERSAMPLING ----
 Train-validation baseline rmse: 0.5155187220347863

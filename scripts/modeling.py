@@ -62,7 +62,7 @@ if REMOVE_OUTLIERS:
 # undersample the playlists with one follower to match the number of the ones with two followers 
 if PERFORM_UNDERSAMPLING:
     agg_features_one_follower_df = agg_features_df.filter(col("num_followers") == 1.0)
-
+    
     playlist_no_one_follower = agg_features_df.filter(col("num_followers") == 1.0).count()
     playlist_no_two_followers = agg_features_df.filter(col("num_followers") == 2.0).count()
 
